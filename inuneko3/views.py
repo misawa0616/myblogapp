@@ -5,6 +5,7 @@ from .forms import DocumentForm
 from .models import Document
 import os
 import threading
+import fasteners
 
 global inunekos3
 
@@ -18,14 +19,20 @@ def model_form_upload(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
+            lock = fasteners.InterProcessLock('./lockfile')
+            lock.acquire()
             form.save()
             bb = "./testpic/" + request.FILES['document'].name
             global inunekos3
-            inunekos3 = Post(bb)
-            os.remove(bb)
-#            t1 = threading.Thread(target=aa)
-#            t1.start()
-#            t1.join()
+            try:
+                inunekos3 = Post(bb)
+            except Exception as e:
+                inunekos3 = Post(bb)
+            try:
+                os.remove(bb)
+            except Exception as e:
+                os.remove(bb)
+            lock.release()
             return redirect('index3')
     else:
         form = DocumentForm()

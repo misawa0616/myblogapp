@@ -38,6 +38,7 @@ def Post(gazou):
     img = load_image(gazou)
     #vec = model.predict(np.array([img]), batch_size=1)
     prd = model.predict(np.array([img]))
+    K.clear_session()
     prelabel = np.argmax(prd, axis=1)
     # 各画像ファイルに猫ならファイル名+0が、犬ならファイル名+1、乗り物ならファイル名+2のラベルが付いている
     if prelabel == 0:
@@ -46,6 +47,5 @@ def Post(gazou):
         inunekos = "犬"
     elif prelabel == 2:
         inunekos = "乗り物"
-    K.clear_session()
 
     return inunekos
