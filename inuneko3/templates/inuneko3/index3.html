@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang = "ja-jp">
+<head>
+	<title>判別結果ページ</title>
+ 
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}">
+
+    <!-- Original styles for this template -->
+    <link rel="stylesheet" href="{% static 'css/header_footer.css' %}">
+</head>
+<body>
+    <header>
+      <div class="logo">犬猫乗り物判別</div>
+            <ul>
+                <li><a class="btn btn-link" href="{% url 'login' %}">【ログアウト】</a></li>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            </ul>
+            <ul>
+                <li><a class="btn btn-link" href="{% url 'upload' %}">【送信ページに戻る】</a></li>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            </ul>
+    </header>
+	<div class="form-signin">
+	<h2>送信された画像は,</h2>
+	<h2>【{{ inunekos3 }}】<h2>
+	<h2>と予測されました。</h2>
+	<br><br>
+	※このページを更新するとエラーになります。
+	</div>
+    <footer>
+      inunekonorimono 2019
+    </footer>
+</body>
+</html>
