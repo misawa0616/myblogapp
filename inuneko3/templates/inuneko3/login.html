@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf8mb4">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
  
     <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
  
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="{% static 'css/signin.css' %}">
@@ -22,12 +23,20 @@
     <form class="form-signin" method="post">
       {% csrf_token %}
       {{ form.errors }}
-      <h2 class="h3 mb-3 font-weight-normal">画像を犬&nbsp;or&nbsp;猫&nbsp;or&nbsp;乗り物に判別</h2>
+      <h3 class="h3 mb-3 font-weight-normal">画像を&nbsp;犬&nbsp;猫&nbsp;乗り物&nbsp;に判別</h3>
       <br>
-      <h3 class="h3 mb-3 font-weight-normal">【Please sign in】</h3>
+      <h3 class="h3 mb-3 font-weight-normal">Please sign in</h3>
+      <br>
       <label for="inputUsername" class="sr-only">Username:</label>
-      <input type="Username" id="inputUsername" name="username" class="form-control" placeholder="Username" required autofocus>
-      <br>
+      <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required autofocus>
+      <!--
+        ・type・・・inputを部品にする。 http://www.htmq.com/html/input.shtml
+        ・id・・・要素に対してIDをつける。 https://www.tagindex.com/html_tag/attribute/id.html
+        ・name・・・input要素のname属性は、input要素の名前を指定する属性。 html5.cyberlab.info/elements/forms/input-name.html
+        ・class・・・要素に対してクラス名を付ける。主にスタイルシートセレクタとして使用。https://www.tagindex.com/html_tag/attribute/class.html
+        ・placeholder・・・入力の助けとなるような短いヒントを指定する。 https://www.tagindex.com/html5/form/input_password.html
+        ・required autofocus・・・
+      -->
       <br>
       <label for="inputPassword" class="sr-only">Password:&nbsp;</label>
       <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>

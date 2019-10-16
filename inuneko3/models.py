@@ -1,41 +1,36 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-import keras
-import sys, os
-import scipy
-import numpy as np
-from keras.models import model_from_json
 from PIL import Image
+from django.utils import timezone
+import MySQLdb as my
 
-import json
+class Image(models.Model):
+    image = models.FileField(upload_to='testpic')
+    uploaded_at = models.DateTimeField(default=timezone.now)
 
-class Document(models.Model):
-    description = models.CharField(max_length=255,blank=True)
-    document = models.FileField(upload_to='testpic')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+class Inuneko3(models.Model):
+    inuneko3 = models.CharField(max_length=128)
+    uploaded_at = models.DateTimeField(default=timezone.now)
+    username = models.CharField(max_length=128)
+
 
 '''
-class RacchaiUserManager(BaseUserManager):
-    def create_user(self, username, password=None, **extra_fields):
-        if not username:
-            raise ValueError('Users must have a username')
-        user = self.model(username=username, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+mysqlに直接書きこむ
+def InsertResult(result, Username):
+	con = my.connect(user='root', password='mysql', database='myblogapp', use_unicode=True, charset="cp932")
+	cursor = con.cursor()
+	statement = "insert into inuneko3_inuneko3(inuneko3, uploaded_at, username) values (%s, now(), %s);"
+	cursor.execute(statement, (result, Username, ))
+	con.commit()
+	cursor.close()
+	con.close()
 
-    def create_superuser(self, username, password):
-        return self.create_user(username, password)
-
-class RacchaiUser(AbstractBaseUser):
-    username = models.CharField(max_length=128, unique=True)
-    twitter_url = models.URLField()
-
-    USERNAME_FIELD = 'username'
-
-    objects = RacchaiUserManager()
-
-    class Meta:
-        db_table = 'racchai_user'
-        swappable = 'AUTH_USER_MODEL'
+def SelectResult(Username):
+	con = my.connect(user='root', password='mysql', database='myblogapp', use_unicode=True, charset="cp932")
+	cursor = con.cursor()
+	statement = "select inuneko3, uploaded_at from inuneko3_inuneko3 where username = %s ORDER BY id DESC limit 10;"
+	cursor.execute(statement, (Username, ))
+	rows = cursor.fetchall()
+	cursor.close()
+	con.close()
+	return rows
 '''

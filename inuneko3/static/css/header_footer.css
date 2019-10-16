@@ -13,6 +13,20 @@ header{
     color:white;
     line-height:60px;
 }
+.left {
+    float:left;
+    width: 50%;
+}
+.left-main {
+    margin: 0 auto;
+}
+.right {
+    float:left;
+    width: 50%;
+}
+.right-main {
+    margin: 0 auto;
+}
 header ul{
     float:right;
     color:white;
@@ -24,7 +38,6 @@ header ul li{
     line-height:40px;
 }
 footer{
-    clear:left;
     width:100%;
     position:absolute;
     bottom:0;

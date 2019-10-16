@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf8mb4">
     <title>送信ページ</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="{% static 'css/signin.css' %}">
 
@@ -15,23 +16,20 @@
     <header>
         <div class="logo">犬猫乗り物判別</div>
             <ul>
-                <li><a class="btn btn-link" href="{% url 'login' %}">【ログアウト】</a></li>
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                <li><a class="btn btn-link" href="{% url 'logout' %}">【ログアウト】</a></li>
             </ul>
     </header>
     <form class="form-signin" method="post" enctype="multipart/form-data">
-        <h3>
+        <h5>
         {% csrf_token %}
         {{ form.as_p }}
-        </h3>
+        </h5>
         <br>
         <button type="submit">Upload</button>
         <br><br><br><br>
         &nbsp;&nbsp;&nbsp;&nbsp;
         機械学習に判別させる画像を選択の上、アップロードをしてください。
         <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        ※ファイル名は英数字でお願いします。
     </form>
     <footer>
       inunekonorimono 2019

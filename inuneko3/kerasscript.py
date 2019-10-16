@@ -22,13 +22,6 @@ def load_image(path):
     img = img / 255.0
     return img
 
-#def get_file(dir_path):
-#    filenames = os.listdir(dir_path)
-#    return filenames
-
-# Create your models here.
-
-#class Post(models.Model):
 def Post(gazou):
     K.clear_session()
     model = model_from_json(open(keras_model).read())
@@ -36,7 +29,6 @@ def Post(gazou):
     model.summary()
     inunekos = ""
     img = load_image(gazou)
-    #vec = model.predict(np.array([img]), batch_size=1)
     prd = model.predict(np.array([img]))
     K.clear_session()
     prelabel = np.argmax(prd, axis=1)

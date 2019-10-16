@@ -1,7 +1,8 @@
 from django import forms
-from .models import Document
+from .models import Image
+from .models import Inuneko3
  
 class DocumentForm(forms.ModelForm):
     class Meta:
-        model = Document
-        fields = ('document', )
+        model = Image
+        fields = ('image', )

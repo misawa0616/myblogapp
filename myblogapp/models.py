@@ -24,7 +24,6 @@ class RacchaiUserManager(BaseUserManager):
 
 class RacchaiUser(AbstractBaseUser):
     username = models.CharField(max_length=128, unique=True)
-    twitter_url = models.URLField()
 
     USERNAME_FIELD = 'username'
 

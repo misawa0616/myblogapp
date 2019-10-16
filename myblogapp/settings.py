@@ -92,6 +92,9 @@ DATABASES = {
         'PASSWORD': 'mysql', # DBへ接続するユーザIDのパスワードを設定
         'HOST': 'localhost',
         'PORT': '3306',
+        'OPTIONS': {
+                'charset': 'cp932',
+            }
     }
 }
 
@@ -121,6 +124,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'ja'
 LOGIN_REDIRECT_URL = '/inuneko3/upload/'
+#ログイン後にリダイレクトされるURL https://it-engineer-lab.com/archives/544
+
 LOGOUT_REDIRECT_URL = '/'
 
 #TIME_ZONE = 'UTC'
@@ -130,7 +135,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -140,3 +145,4 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/pics/'
 MEDIA_ROOT = BASE_DIR
 MEDIA_URL2 = '/media/'
+LOGIN_URL = '/'

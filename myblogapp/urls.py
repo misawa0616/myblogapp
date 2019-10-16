@@ -20,9 +20,14 @@ from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 
+
 urlpatterns = [
 	path('posts/', include('posts.urls')),
     path('admin/', admin.site.urls),
     path('inuneko3/', include('inuneko3.urls')),
+    #プロジェクトレベルURL設定。
+    path('', include('django.contrib.auth.urls')),
+    #認証関連ビューの有効化。
     path('', auth_views.LoginView.as_view(template_name='inuneko3/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
