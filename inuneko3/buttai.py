@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib
 import io
 import cv2
 from keras.applications.imagenet_utils import preprocess_input
@@ -13,6 +14,7 @@ from django.http import HttpResponse
 
 
 def Buttai(gazou):
+	matplotlib.use('agg')
 	plt.rcParams['figure.figsize'] = (10, 10)
 	plt.rcParams['image.interpolation'] = 'nearest'
 	np.set_printoptions(suppress=True)
@@ -80,4 +82,5 @@ def Buttai(gazou):
 	buf = io.BytesIO()
 	plt.savefig(buf, format='jpg')
 	response = HttpResponse(buf.getvalue(), content_type="image/jpg")
+	plt.close()
 	return response
