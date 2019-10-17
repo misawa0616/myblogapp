@@ -9,21 +9,21 @@
     <link rel="stylesheet" href="{% static 'css/signin.css' %}">
 
     <!-- Original styles for this template -->
-    <link rel="stylesheet" href="{% static 'css/header_footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header_footer_1.css' %}">
   </head>
 </head>
 <body class="text-center">
     <header>
-        <div class="logo">犬猫乗り物判別</div>
+        <div class="logo">物体検出</div>
             <ul>
                 <li><a class="btn btn-link" href="{% url 'logout' %}">【ログアウト】</a>
-                <li><a class="btn btn-link" href="{% url 'upload_buttai' %}">【物体検出】</a>
+                <li><a class="btn btn-link" href="{% url 'upload' %}">【犬猫乗り物判別】</a>
             </ul>
     </header>
     <form class="form-signin" method="post" enctype="multipart/form-data">
         <h5>
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form_buttai.as_p }}
         </h5>
         <br>
         <button type="submit">Upload</button>
@@ -33,7 +33,7 @@
         <br>
     </form>
     <footer>
-      inunekonorimono 2019
+      buttaikensyutu 2019
     </footer>
 </body>
 </html>

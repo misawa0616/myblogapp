@@ -7,6 +7,10 @@ class Image(models.Model):
     image = models.FileField(upload_to='testpic')
     uploaded_at = models.DateTimeField(default=timezone.now)
 
+class Image_buttai(models.Model):
+    image = models.FileField(upload_to='pics')
+    uploaded_at = models.DateTimeField(default=timezone.now)
+
 class Inuneko3(models.Model):
     inuneko3 = models.CharField(max_length=128)
     uploaded_at = models.DateTimeField(default=timezone.now)

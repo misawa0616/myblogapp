@@ -18,12 +18,13 @@
   </head>
   <body>
     <header>
-      <div class="logo">犬猫乗り物判別</div>
+      <div class="logo">犬猫乗り物判別＆物体検出</div>
     </header>
     <form class="form-signin" method="post">
       {% csrf_token %}
       {{ form.errors }}
       <h3 class="h3 mb-3 font-weight-normal">画像を&nbsp;犬&nbsp;猫&nbsp;乗り物&nbsp;に判別</h3>
+      <h3 class="h3 mb-3 font-weight-normal">画像から物体を検出</h3>
       <br>
       <h3 class="h3 mb-3 font-weight-normal">Please sign in</h3>
       <br>
