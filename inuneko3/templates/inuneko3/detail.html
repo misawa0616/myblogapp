@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf8mb4">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+ 
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+ 
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}">
+
+    <!-- Original styles for this template -->
+    <link rel="stylesheet" href="{% static 'css/header_footer.css' %}">
+  </head>
+  <body>
+  	  <header>
+      <div class="logo">犬猫乗り物判別</div>
+            <ul>
+                <li><a class="btn btn-link" href="{% url 'logout' %}">【ログアウト】</a></li>
+            </ul>
+            <ul>
+                <li><a class="btn btn-link" href="{% url 'upload' %}">【送信ページに戻る】</a></li>
+            </ul>
+    </header>
+    <div class="form-signin">
+    <img src='../image/' alt="" width="500px" height="500px">
+	</div>
+    <footer>
+      inunekonorimono 2019
+    </footer>
+  </body>
+</html>
