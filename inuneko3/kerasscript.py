@@ -24,6 +24,7 @@ def load_image(path):
 
 def Post(gazou):
     K.clear_session()
+    # 念のため実行前後でセッションを削除する。
     model = model_from_json(open(keras_model).read())
     model.load_weights(keras_param)
     model.summary()
@@ -31,6 +32,7 @@ def Post(gazou):
     img = load_image(gazou)
     prd = model.predict(np.array([img]))
     K.clear_session()
+    # 念のため実行前後でセッションを削除する。
     prelabel = np.argmax(prd, axis=1)
     # 各画像ファイルに猫ならファイル名+0が、犬ならファイル名+1、乗り物ならファイル名+2のラベルが付いている
     if prelabel == 0:

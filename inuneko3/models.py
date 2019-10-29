@@ -18,7 +18,7 @@ class Inuneko3(models.Model):
 
 
 '''
-mysqlに直接書きこむ
+sqlコマンドで直接書きこむ場合
 def InsertResult(result, Username):
 	con = my.connect(user='root', password='mysql', database='myblogapp', use_unicode=True, charset="cp932")
 	cursor = con.cursor()
