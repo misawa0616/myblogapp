@@ -24,10 +24,11 @@ def load_image(path):
 
 def Post(gazou):
     K.clear_session()
+    print(os.getpid())
     # 念のため実行前後でセッションを削除する。
     model = model_from_json(open(keras_model).read())
     model.load_weights(keras_param)
-    model.summary()
+    #model.summary()
     inunekos = ""
     img = load_image(gazou)
     prd = model.predict(np.array([img]))

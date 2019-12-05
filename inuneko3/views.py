@@ -22,31 +22,43 @@ import tensorflow as tf
 from ssd import SSD300
 from ssd_utils import BBoxUtility
 from django.http import HttpResponse
+import threading
 
+lock = threading.Lock()
+#なぜかlock.acquire()の上に置くと、スレッドセーフになれず。
 
 @login_required()
 def model_form_upload(request):
+	print(threading.get_ident())
+	print(os.getpid())
 	if request.method == 'POST':
 		# POSTメソッドの場合、True
 		form = DocumentForm(request.POST, request.FILES)
 		# フォームからリクエスト内容を格納する。
 		if form.is_valid():
 		# フォームに入力された値にエラーがない場合,TRUEとする。
-			lock = fasteners.InterProcessLock('./lockfile')
+			print('processid')
+			print(threading.get_ident())
+			print(os.getpid())
 			lock.acquire()
 			# 排他ロック
 			form.save()
+			print('save')
 			# リクエストに含まれる内容をdatabaseに保存する。同時に画像が保存される。
 			bb = "./testpic/" + request.FILES['image'].name
 			# 送信された画像のパスを変数に代入する。
 			try:
+				print(bb)
 				inunekos3 = Post(bb)
+				print('after' + bb)
 			except Exception as e:
 				inunekos3 = Post(bb)
 			# 画像解析処理、重い。1度だけリトライする。
 			try:
+				print(bb)
 				os.remove(bb)
 			except Exception as e:
+				print('retry' + bb)
 				os.remove(bb)
 			#uploadされた画像を削除している。1度だけリトライする。
 			Username = request.user.username
