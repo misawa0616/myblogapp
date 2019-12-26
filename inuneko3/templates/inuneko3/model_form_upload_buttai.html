@@ -10,14 +10,13 @@
 
     <!-- Original styles for this template -->
     <link rel="stylesheet" href="{% static 'css/header_footer_1.css' %}">
-  </head>
 </head>
 <body class="text-center">
     <header>
         <div class="logo">物体検出</div>
             <ul>
-                <li><a class="btn btn-link" href="{% url 'logout' %}">【ログアウト】</a>
-                <li><a class="btn btn-link" href="{% url 'upload' %}">【犬猫乗り物判別へ】</a>
+                <li><a class="btn btn-link" href="{% url 'logout' %}">【ログアウト】</a></li>
+                <li><a class="btn btn-link" href="{% url 'upload' %}">【犬猫乗り物判別へ】</a></li>
             </ul>
     </header>
     <form class="form-signin" method="post" enctype="multipart/form-data">

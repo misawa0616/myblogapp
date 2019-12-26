@@ -1,14 +1,6 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-import keras
-import sys, os
-import scipy
-import numpy as np
-from keras.models import model_from_json
-from PIL import Image
-
-import json
 
 class RacchaiUserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):

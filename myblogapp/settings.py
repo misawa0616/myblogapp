@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'posts.apps.PostsConfig',
     'inuneko3.apps.Inuneko3Config',
     'django.contrib.staticfiles',
     'myblogapp',
@@ -142,7 +141,5 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/pics/'
 MEDIA_ROOT = BASE_DIR
-MEDIA_URL2 = '/media/'
 LOGIN_URL = '/'

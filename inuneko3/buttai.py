@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib
 import io
-import cv2
 from keras.applications.imagenet_utils import preprocess_input
 from keras.backend.tensorflow_backend import set_session
 from keras.preprocessing import image
@@ -11,9 +10,60 @@ import tensorflow as tf
 from ssd import SSD300
 from ssd_utils import BBoxUtility
 from django.http import HttpResponse
+from PIL import Image
 
+voc_classes = ['Aeroplane', 'Bicycle', 'Bird', 'Boat', 'Bottle',
+	'Bus', 'Car', 'Cat', 'Chair', 'Cow', 'Diningtable',
+	'Dog', 'Horse','Motorbike', 'Person', 'Pottedplant',
+	'Sheep', 'Sofa', 'Train', 'Tvmonitor']
+NUM_CLASSES = len(voc_classes) + 1
+input_shape=(300, 300, 3)
+
+def rotateImage(img, orientation):
+    """
+    画像ファイルをOrientationの値に応じて回転させる
+    """
+    #orientationの値に応じて画像を回転させる
+    if orientation == 1:
+        pass
+    elif orientation == 2:
+        #左右反転
+        img_rotate = img.transpose(Image.FLIP_LEFT_RIGHT)
+    elif orientation == 3:
+        #180度回転
+        img_rotate = img.transpose(Image.ROTATE_180)
+    elif orientation == 4:
+        #上下反転
+        img_rotate = img.transpose(Image.FLIP_TOP_BOTTOM)
+    elif orientation == 5:
+        #左右反転して90度回転
+        img_rotate = img.transpose(Image.FLIP_LEFT_RIGHT).transpose(Image.ROTATE_90)
+    elif orientation == 6:
+        #270度回転
+        img_rotate = img.transpose(Image.ROTATE_270)
+    elif orientation == 7:
+        #左右反転して270度回転
+        img_rotate = img.transpose(Image.FLIP_LEFT_RIGHT).transpose(Image.ROTATE_270)
+    elif orientation == 8:
+        #90度回転
+        img_rotate = img.transpose(Image.ROTATE_90)
+    else:
+        pass
+
+    return img_rotate
 
 def Buttai(gazou):
+	img_tmp = Image.open(gazou)
+	try:
+		exifinfo = img_tmp._getexif()
+		orientation = exifinfo.get(0x112, 1)
+		print(orientation)
+		img_tmp_rotate = rotateImage(img_tmp, orientation)
+		orientation_gazou = io.BytesIO()
+		img_tmp_rotate.save(orientation_gazou, format='PNG')
+	except:
+		orientation_gazou = io.BytesIO()
+		img_tmp.save(orientation_gazou, format='PNG')
 	matplotlib.use('agg')
 	plt.rcParams['figure.figsize'] = (10, 10)
 	plt.rcParams['image.interpolation'] = 'nearest'
@@ -21,21 +71,15 @@ def Buttai(gazou):
 	config = tf.ConfigProto()
 	config.gpu_options.per_process_gpu_memory_fraction = 0.45
 	set_session(tf.Session(config=config))
-	voc_classes = ['Aeroplane', 'Bicycle', 'Bird', 'Boat', 'Bottle',
-   		'Bus', 'Car', 'Cat', 'Chair', 'Cow', 'Diningtable',
-   		'Dog', 'Horse','Motorbike', 'Person', 'Pottedplant',
-   		'Sheep', 'Sofa', 'Train', 'Tvmonitor']
-	NUM_CLASSES = len(voc_classes) + 1
 	# 独自に学習したモデルを使用する場合、フォルダcheckpointsのモデルを選択してください。
-	input_shape=(300, 300, 3)
 	model = SSD300(input_shape, num_classes=NUM_CLASSES)
 	model.load_weights('weights_SSD300.hdf5', by_name=True)
 	bbox_util = BBoxUtility(NUM_CLASSES)
 	inputs = []
 	images = []
-	img = image.load_img(gazou, target_size=(300, 300))
+	img = image.load_img(orientation_gazou, target_size=(300, 300))
 	img = image.img_to_array(img)
-	images.append(imread(gazou))
+	images.append(imread(orientation_gazou))
 	inputs.append(img.copy())
 	inputs = preprocess_input(np.array(inputs))
 	preds = model.predict(inputs, batch_size=1, verbose=1)

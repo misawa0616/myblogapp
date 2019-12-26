@@ -1,8 +1,13 @@
-import os
+from django.db import models
+import keras
+import sys, os
+import scipy
 import numpy as np
 from keras.models import model_from_json
 from PIL import Image
 from keras import backend as K
+
+import json
 
 imsize = (32, 32)
 keras_model = "./test.json"
@@ -14,7 +19,6 @@ def load_image(path):
     img = img.resize(imsize)
     # 画像データをnumpy配列の形式に変更
     img = np.asarray(img)
-    print(img)
     img = img / 255.0
     return img
 

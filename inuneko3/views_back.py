@@ -1,15 +1,29 @@
 from django.shortcuts import render,redirect
+from django.http import HttpResponse
 from .kerasscript import Post
 from .forms_buttai import DocumentForm_buttai
 from .forms import DocumentForm
 from .models import Image
+from .models import Image_buttai
 from .models import Inuneko3
 import os
 import fasteners
 from django.contrib.auth.decorators import login_required
 from .buttai import Buttai
+import matplotlib.pyplot as plt
 import io
+import cv2
+from keras.applications.imagenet_utils import preprocess_input
+from keras.backend.tensorflow_backend import set_session
+from keras.preprocessing import image
+import numpy as np
+from scipy.misc import imread
+import tensorflow as tf
+from ssd import SSD300
+from ssd_utils import BBoxUtility
+from django.http import HttpResponse
 import threading
+import subprocess
 
 lock = threading.Lock()
 lock1 = fasteners.InterProcessLock('./lockfile1')

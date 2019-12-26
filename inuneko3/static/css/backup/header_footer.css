@@ -1,6 +1,6 @@
 header{
     height:60px;
-    background-color:#99CCFF;
+    background-color:#99CCCC;
     position:absolute;
     top:0px;
     left:0px;
@@ -33,10 +33,6 @@ footer{
     text-align:center;
     height:50px;
     line-height:50px;
-}
-.p {
-  width: 100px;
-  height: 100px;
 }
 .class{
 	color:white;

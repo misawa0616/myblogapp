@@ -1,7 +1,5 @@
 from django.db import models
-from PIL import Image
 from django.utils import timezone
-import MySQLdb as my
 
 class Image(models.Model):
     image = models.FileField(upload_to='testpic')

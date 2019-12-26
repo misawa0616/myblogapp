@@ -1,18 +1,30 @@
 from django.shortcuts import render,redirect
+from django.http import HttpResponse
 from .kerasscript import Post
 from .forms_buttai import DocumentForm_buttai
 from .forms import DocumentForm
 from .models import Image
+from .models import Image_buttai
 from .models import Inuneko3
 import os
 import fasteners
 from django.contrib.auth.decorators import login_required
 from .buttai import Buttai
+import matplotlib.pyplot as plt
 import io
+import cv2
+from keras.applications.imagenet_utils import preprocess_input
+from keras.backend.tensorflow_backend import set_session
+from keras.preprocessing import image
+import numpy as np
+from scipy.misc import imread
+import tensorflow as tf
+from ssd import SSD300
+from ssd_utils import BBoxUtility
+from django.http import HttpResponse
 import threading
 
 lock = threading.Lock()
-lock1 = fasteners.InterProcessLock('./lockfile1')
 #なぜかlock.acquire()の上に置くと、スレッドセーフになれず。
 
 @login_required()
@@ -25,13 +37,30 @@ def model_form_upload(request):
 		# フォームからリクエスト内容を格納する。
 		if form.is_valid():
 		# フォームに入力された値にエラーがない場合,TRUEとする。
+			print('processid')
+			print(threading.get_ident())
+			print(os.getpid())
 			lock.acquire()
 			# 排他ロック
+			form.save()
+			print('save')
+			# リクエストに含まれる内容をdatabaseに保存する。同時に画像が保存される。
+			bb = "./testpic/" + request.FILES['image'].name
+			# 送信された画像のパスを変数に代入する。
 			try:
-				inunekos3 = Post(request.FILES['image'])
+				print(bb)
+				inunekos3 = Post(bb)
+				print('after' + bb)
 			except Exception as e:
-				inunekos3 = Post(request.FILES['image'])
+				inunekos3 = Post(bb)
 			# 画像解析処理、重い。1度だけリトライする。
+			try:
+				print(bb)
+				os.remove(bb)
+			except Exception as e:
+				print('retry' + bb)
+				os.remove(bb)
+			#uploadされた画像を削除している。1度だけリトライする。
 			Username = request.user.username
 			# 実行ユーザ-を変数に代入する。
 			Inuneko3(inuneko3=inunekos3 , username=Username).save()
@@ -63,9 +92,11 @@ def model_form_upload_buttai(request):
 		# フォームからリクエスト内容を格納する。
 		if form_buttai.is_valid():
 		# フォームに入力された値にエラーがない場合,TRUEとする。
-			global cc
-			img_read = request.FILES['image'].read()
-			cc = io.BytesIO(img_read)
+			form_buttai.save()
+			# リクエストに含まれる内容をdatabaseに保存する。同時に画像が保存される。
+			cc = "./pics/" + request.FILES['image'].name
+			# 送信された画像のパスを変数に代入する。
+			request.session['cc'] = cc
 			# ファイル名をセッションに格納する。
 			return render(request, 'inuneko3/detail.html')
 	else:
@@ -75,12 +106,17 @@ def model_form_upload_buttai(request):
 
 @login_required()
 def Image(request):
+	lock = fasteners.InterProcessLock('./lockfile1')
+	lock.acquire()
 	# 排他ロック
-	lock1.acquire()
+	dd = request.session['cc']
 	# 排他制御を考慮している。 下記response = Buttai()実行中に、別のプロセスのlogin_required()でccが変更されてしまい、
-	# 不整合が発生する恐れがある。
-	response = Buttai(cc)
+	# 変更後画像が、os.remove()で削除されてしまう恐れがあるため不整合が発生する恐れがある。
+	# cc→ddに変更している。
+	response = Buttai(dd)
 	# 画像解析処理、重い
-	lock1.release()
+	os.remove(dd)
+	#uploadされた画像を削除している。
+	lock.release()
 	# 排他ロック
 	return response
