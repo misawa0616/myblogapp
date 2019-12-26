@@ -1,15 +1,14 @@
 from django.shortcuts import render,redirect
-from .kerasscript import Post
-from .forms_buttai import DocumentForm_buttai
-from .forms import DocumentForm
-from .models import Image
-from .models import Inuneko3
+from django.contrib.auth.decorators import login_required
 import os
 import fasteners
-from django.contrib.auth.decorators import login_required
-from .buttai import Buttai
 import io
 import threading
+
+from .kensyutsu.buttai import Buttai
+from .sikibetsu.kerasscript import Post
+from .forms import DocumentForm
+from .models import Inuneko3
 
 lock = threading.Lock()
 lock1 = fasteners.InterProcessLock('./lockfile1')
@@ -59,7 +58,7 @@ def DetailView(request):
 def model_form_upload_buttai(request):
 	if request.method == 'POST':
 		# POSTメソッドの場合、True
-		form_buttai = DocumentForm_buttai(request.POST, request.FILES)
+		form_buttai = DocumentForm(request.POST, request.FILES)
 		# フォームからリクエスト内容を格納する。
 		if form_buttai.is_valid():
 		# フォームに入力された値にエラーがない場合,TRUEとする。
@@ -69,7 +68,7 @@ def model_form_upload_buttai(request):
 			# ファイル名をセッションに格納する。
 			return render(request, 'inuneko3/detail.html')
 	else:
-		form_buttai = DocumentForm_buttai()
+		form_buttai = DocumentForm()
 		# POSTメソッド以外の場合、model_form_upload_buttai.htmlへ移動する。
 	return render(request, 'inuneko3/model_form_upload_buttai.html', {'form_buttai': form_buttai})
 

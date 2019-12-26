@@ -7,10 +7,11 @@ from keras.preprocessing import image
 import numpy as np
 from scipy.misc import imread
 import tensorflow as tf
-from ssd import SSD300
-from ssd_utils import BBoxUtility
 from django.http import HttpResponse
 from PIL import Image
+
+from .ssd_utils import BBoxUtility
+from .ssd import SSD300
 
 voc_classes = ['Aeroplane', 'Bicycle', 'Bird', 'Boat', 'Bottle',
 	'Bus', 'Car', 'Cat', 'Chair', 'Cow', 'Diningtable',
@@ -73,7 +74,7 @@ def Buttai(gazou):
 	set_session(tf.Session(config=config))
 	# 独自に学習したモデルを使用する場合、フォルダcheckpointsのモデルを選択してください。
 	model = SSD300(input_shape, num_classes=NUM_CLASSES)
-	model.load_weights('weights_SSD300.hdf5', by_name=True)
+	model.load_weights('./inuneko3/kensyutsu/weights_SSD300.hdf5', by_name=True)
 	bbox_util = BBoxUtility(NUM_CLASSES)
 	inputs = []
 	images = []

@@ -5,8 +5,8 @@ from PIL import Image
 from keras import backend as K
 
 imsize = (32, 32)
-keras_model = "./test.json"
-keras_param = "./test.hdf5"
+keras_model = "./inuneko3/sikibetsu/test.json"
+keras_param = "./inuneko3/sikibetsu/test.hdf5"
 
 def load_image(path):
     img = Image.open(path)
