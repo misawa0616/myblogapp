@@ -9,6 +9,7 @@ from scipy.misc import imread
 import tensorflow as tf
 from django.http import HttpResponse
 from PIL import Image
+import sys
 
 from .ssd_utils import BBoxUtility
 from .ssd import SSD300
@@ -54,15 +55,17 @@ def rotateImage(img, orientation):
     return img_rotate
 
 def Buttai(gazou):
-	img_tmp = Image.open(gazou)
 	try:
-		exifinfo = img_tmp._getexif()
+		img_tmp2 = Image.open(gazou)
+		exifinfo = img_tmp2._getexif()
 		orientation = exifinfo.get(0x112, 1)
 		print(orientation)
-		img_tmp_rotate = rotateImage(img_tmp, orientation)
+		img_tmp = rotateImage(img_tmp2, orientation)
 		orientation_gazou = io.BytesIO()
-		img_tmp_rotate.save(orientation_gazou, format='PNG')
+		img_tmp.save(orientation_gazou, format='PNG')
+		img_tmp2.close()
 	except:
+		img_tmp = Image.open(gazou)
 		orientation_gazou = io.BytesIO()
 		img_tmp.save(orientation_gazou, format='PNG')
 	matplotlib.use('agg')
@@ -81,6 +84,7 @@ def Buttai(gazou):
 	img = image.load_img(orientation_gazou, target_size=(300, 300))
 	img = image.img_to_array(img)
 	images.append(imread(orientation_gazou))
+	img_tmp.close()
 	inputs.append(img.copy())
 	inputs = preprocess_input(np.array(inputs))
 	preds = model.predict(inputs, batch_size=1, verbose=1)
@@ -127,5 +131,11 @@ def Buttai(gazou):
 	buf = io.BytesIO()
 	plt.savefig(buf, format='jpg')
 	response = HttpResponse(buf.getvalue(), content_type="image/jpg")
+	buf.close()
 	plt.close()
+	print("{}{: >25}{}{: >10}{}".format('|','Variable Name','|','Memory','|'))
+	print(" ------------------------------------ ")
+	for var_name in dir():
+		if not var_name.startswith("_"):
+			print("{}{: >25}{}{: >10}{}".format('|',var_name,'|',sys.getsizeof(eval(var_name)),'|'))
 	return response

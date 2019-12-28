@@ -4,6 +4,7 @@ import os
 import fasteners
 import io
 import threading
+import sys
 
 from .kensyutsu.buttai import Buttai
 from .sikibetsu.kerasscript import Post
@@ -79,6 +80,7 @@ def Image(request):
 	# 排他制御を考慮している。 下記response = Buttai()実行中に、別のプロセスのlogin_required()でccが変更されてしまい、
 	# 不整合が発生する恐れがある。
 	response = Buttai(cc)
+	cc.close()
 	# 画像解析処理、重い
 	lock1.release()
 	# 排他ロック
