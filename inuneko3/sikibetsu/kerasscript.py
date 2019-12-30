@@ -3,6 +3,8 @@ import numpy as np
 from keras.models import model_from_json
 from PIL import Image
 from keras import backend as K
+import gc
+from memory_profiler import profile
 
 imsize = (32, 32)
 keras_model = "./inuneko3/sikibetsu/test.json"
@@ -18,6 +20,7 @@ def load_image(path):
     img = img / 255.0
     return img
 
+@profile
 def Post(gazou):
     K.clear_session()
     print(os.getpid())
@@ -38,5 +41,6 @@ def Post(gazou):
         inunekos = "犬"
     elif prelabel == 2:
         inunekos = "乗り物"
-
+    gc.collect()
+    print(gc.get_stats())
     return inunekos

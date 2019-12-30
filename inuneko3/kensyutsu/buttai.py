@@ -10,16 +10,12 @@ import tensorflow as tf
 from django.http import HttpResponse
 from PIL import Image
 import sys
+import gc
+from memory_profiler import profile
+from keras import backend as K
 
 from .ssd_utils import BBoxUtility
 from .ssd import SSD300
-
-voc_classes = ['Aeroplane', 'Bicycle', 'Bird', 'Boat', 'Bottle',
-	'Bus', 'Car', 'Cat', 'Chair', 'Cow', 'Diningtable',
-	'Dog', 'Horse','Motorbike', 'Person', 'Pottedplant',
-	'Sheep', 'Sofa', 'Train', 'Tvmonitor']
-NUM_CLASSES = len(voc_classes) + 1
-input_shape=(300, 300, 3)
 
 def rotateImage(img, orientation):
     """
@@ -54,7 +50,9 @@ def rotateImage(img, orientation):
 
     return img_rotate
 
+@profile
 def Buttai(gazou):
+	K.clear_session()
 	try:
 		img_tmp2 = Image.open(gazou)
 		exifinfo = img_tmp2._getexif()
@@ -64,6 +62,8 @@ def Buttai(gazou):
 		orientation_gazou = io.BytesIO()
 		img_tmp.save(orientation_gazou, format='PNG')
 		img_tmp2.close()
+		del img_tmp2
+		del exifinfo
 	except:
 		img_tmp = Image.open(gazou)
 		orientation_gazou = io.BytesIO()
@@ -75,6 +75,12 @@ def Buttai(gazou):
 	config = tf.ConfigProto()
 	config.gpu_options.per_process_gpu_memory_fraction = 0.45
 	set_session(tf.Session(config=config))
+	voc_classes = ['Aeroplane', 'Bicycle', 'Bird', 'Boat', 'Bottle',
+	'Bus', 'Car', 'Cat', 'Chair', 'Cow', 'Diningtable',
+	'Dog', 'Horse','Motorbike', 'Person', 'Pottedplant',
+	'Sheep', 'Sofa', 'Train', 'Tvmonitor']
+	NUM_CLASSES = len(voc_classes) + 1
+	input_shape=(300, 300, 3)
 	# 独自に学習したモデルを使用する場合、フォルダcheckpointsのモデルを選択してください。
 	model = SSD300(input_shape, num_classes=NUM_CLASSES)
 	model.load_weights('./inuneko3/kensyutsu/weights_SSD300.hdf5', by_name=True)
@@ -84,12 +90,12 @@ def Buttai(gazou):
 	img = image.load_img(orientation_gazou, target_size=(300, 300))
 	img = image.img_to_array(img)
 	images.append(imread(orientation_gazou))
-	img_tmp.close()
+	#img_tmp.close()
 	inputs.append(img.copy())
 	inputs = preprocess_input(np.array(inputs))
 	preds = model.predict(inputs, batch_size=1, verbose=1)
 	results = bbox_util.detection_out(preds)
-	a = model.predict(inputs, batch_size=1)
+	#a = model.predict(inputs, batch_size=1)
 	b = bbox_util.detection_out(preds)
 	for i, img in enumerate(images):
 	# Parse the outputs.
@@ -132,10 +138,60 @@ def Buttai(gazou):
 	plt.savefig(buf, format='jpg')
 	response = HttpResponse(buf.getvalue(), content_type="image/jpg")
 	buf.close()
+	img_tmp.close()
+	plt.cla()
+	plt.clf()
 	plt.close()
+	del gazou
+	del exifinfo
+	del img_tmp
+	del orientation_gazou
+	del buf
+	del input_shape
+	del voc_classes
+	del NUM_CLASSES
+	del config
+	del model
+	del bbox_util
+	del inputs
+	del images
+	del img
+	del preds
+	del results
+	del b
+	del det_label
+	del det_conf
+	del det_xmin
+	del det_ymin
+	del det_xmax
+	del det_ymax
+	del top_indices
+	del top_conf
+	del top_label_indices
+	del top_xmin
+	del top_ymin
+	del top_xmax
+	del top_ymax
+	del colors
+	del currentAxis
+	del xmin
+	del ymin
+	del xmax
+	del ymax
+	del score
+	del label
+	del label_name
+	del display_txt
+	del coords
+	del color
+	gc.collect()
+	'''
+	print(gc.get_stats())
 	print("{}{: >25}{}{: >10}{}".format('|','Variable Name','|','Memory','|'))
 	print(" ------------------------------------ ")
 	for var_name in dir():
 		if not var_name.startswith("_"):
 			print("{}{: >25}{}{: >10}{}".format('|',var_name,'|',sys.getsizeof(eval(var_name)),'|'))
+	'''
+	K.clear_session()
 	return response

@@ -5,6 +5,7 @@ import fasteners
 import io
 import threading
 import sys
+import gc
 
 from .kensyutsu.buttai import Buttai
 from .sikibetsu.kerasscript import Post
@@ -66,6 +67,8 @@ def model_form_upload_buttai(request):
 			global cc
 			img_read = request.FILES['image'].read()
 			cc = io.BytesIO(img_read)
+			del img_read
+			gc.collect()
 			# ファイル名をセッションに格納する。
 			return render(request, 'inuneko3/detail.html')
 	else:
@@ -81,6 +84,12 @@ def Image(request):
 	# 不整合が発生する恐れがある。
 	response = Buttai(cc)
 	cc.close()
+	gc.collect()
+	print("{}{: >25}{}{: >10}{}".format('|','Variable Name','|','Memory','|'))
+	print(" ------------------------------------ ")
+	for var_name in dir():
+		if not var_name.startswith("_"):
+			print("{}{: >25}{}{: >10}{}".format('|',var_name,'|',sys.getsizeof(eval(var_name)),'|'))
 	# 画像解析処理、重い
 	lock1.release()
 	# 排他ロック
