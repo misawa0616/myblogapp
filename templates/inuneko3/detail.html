@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="utf8mb4">
+<head>
+  <title>検出結果ページ</title>
+  <link rel="stylesheet" href="{% static 'inuneko3/bootstrap.min.css' %}">
+
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="{% static 'inuneko3/signin.css' %}">
+
+  <!-- Original styles for this template -->
+  <link rel="stylesheet" href="{% static 'inuneko3/header_footer_1.css' %}">
+</head>
+<body>
+	<header>
+  <div class="logo">物体検出</div>
+    <ul>
+        <li><a class="btn btn-link" href="{% url 'upload_buttai' %}">【送信ページに戻る】</a></li>
+        <li><a class="btn btn-link" href="{% url 'logout' %}">【ログアウト】</a></li>
+        <li><a class="btn btn-link" href="{% url 'upload' %}">【犬猫乗り物判別へ】</a></li>
+    </ul>
+  </header>
+  <div class="form-signin">
+    10秒ほどかかります。
+    <br>
+    画像が表示されない場合再度お試し下さい。
+  <img src='../image/' alt="" width="500px" height="500px">
+  </div>
+  <footer>
+    buttaikensyutu 2019
+  </footer>
+</body>
+</html>
