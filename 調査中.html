@@ -21,7 +21,7 @@
 <br>
 <form>
 <label for="file">
-<input id="file" name="file" type="file" />
+<input id="file" name="file" type="file" value=""/>
 <span id="name" class="sample-box-1">ドラッグ＆ドロップ</span>
 </label>
 <br>
@@ -49,8 +49,9 @@ document.querySelector('#name').innerHTML = input.name;
       var files = evt.dataTransfer.files;
 
       document.getElementById('name').innerHTML = files[0].name;
-      document.getElementById("file").value = files;
-    }
+      var input = document.querySelectorAll('input[name="file"]'); //好きなようにDOMを取得してください
+      input[0].files = evt.dataTransfer.files; //取得したinput[type=file]にDropしたファイルを突っ込む
+  }
 
     function handleDragOver(evt) {
       evt.stopPropagation();
