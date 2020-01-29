@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>HTML5 TIPS</title>
+<style type="text/css">
+	input{
+		visibility: hidden;
+	}
+	.sample-box-1 {
+	position: relative;
+    border: 4px double #ddd;
+    margin: 2em 0;
+    padding: 2em;
+    text-align:center
+}
+</style>
+</head>
+<body onload="PageLoad();">
+<br>
+<br>
+<form>
+<label for="file">
+<input id="file" name="file" type="file" />
+<span id="name" class="sample-box-1">ドラッグ＆ドロップ</span>
+</label>
+<br>
+<br>
+<br>
+<button class="btn btn-success" style="width:400px; margin-left:30px;">アップロード</button>
+</form>
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+// 指定されると動くメッソド
+document.querySelector("#file").addEventListener('change', function(e) {
+// ブラウザーがFile APIを利用できるか確認
+if (window.File) {
+// 指定したファイルの情報を取得
+var input = document.querySelector('#file').files[0];
+// 最後に、反映
+document.querySelector('#name').innerHTML = input.name;
+}
+}, true);
+});
+    function handleFileSelect(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+
+      var files = evt.dataTransfer.files;
+
+      document.getElementById('name').innerHTML = files[0].name;
+      document.getElementById("file").value = files;
+    }
+
+    function handleDragOver(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+      evt.dataTransfer.dropEffect = 'copy';
+    }
+    
+    function PageLoad(evt) {
+      var dropFrame = document.getElementById('name');
+      dropFrame.addEventListener('dragover', handleDragOver, false);
+      dropFrame.addEventListener('drop', handleFileSelect, false);
+    }
+</script>
+</body>
+</html>
