@@ -1,7 +1,7 @@
 absl-py==0.8.0
 astor==0.8.0
 certifi==2019.9.11
-Django==2.2.6
+Django==2.2.13
 fasteners==0.15
 gast==0.2.2
 google-pasta==0.1.7
