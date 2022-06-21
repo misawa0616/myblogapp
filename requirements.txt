@@ -17,7 +17,7 @@ mod-wsgi==4.6.8+ap24vc15
 monotonic==1.5
 mysql==0.0.2
 mysqlclient==1.4.4
-numpy==1.17.2
+numpy==1.22.0
 opencv-python==4.1.1.26
 opt-einsum==3.1.0
 Pillow==6.2.0
