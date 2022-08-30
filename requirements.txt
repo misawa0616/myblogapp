@@ -13,7 +13,7 @@ Keras-Preprocessing==1.1.0
 kiwisolver==1.1.0
 Markdown==3.1.1
 matplotlib==3.1.1
-mod-wsgi==4.6.8+ap24vc15
+mod-wsgi==4.9.3
 monotonic==1.5
 mysql==0.0.2
 mysqlclient==1.4.4
